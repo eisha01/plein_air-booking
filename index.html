@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Caravan App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+    
+    <style>
+      /* Body styles */
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+      }
+      
+      /* Header styles */
+      h1 {
+        font-size: 36px;
+        text-align: center;
+        margin: 50px 0;
+      }
+      
+      /* Form styles */
+      label {
+        font-size: 20px;
+        display: block;
+        margin-bottom: 10px;
+      }
+      input[type='number'],
+      input[type='text'] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        font-size: 16px;
+      }
+      input[type='number']:focus,
+      input[type='text']:focus {
+        outline: none;
+        box-shadow: 0 0 5px #4caf50;
+      }
+      
+      /* Button styles */
+      button {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        margin-right: 10px
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>Caravan App</h1>
+    <label for="CaravanID">Enter caravanID:</label>
+    <input type="number" id="CaravanID" placeholder="CaravanID" />
+    <br />
+    <label for="Name">Enter caravan name:</label>
+    <input type="text" id="Name" placeholder="Name" />
+    <br />
+    <label for="Description">Enter Description:</label>
+    <input type="text" id="Description" placeholder="Description" />
+    <br />
+    <label for="Type">Enter caravan Type:</label>
+    <input type="text" id="Type" placeholder="Type" />
+    <br />
+    <label for="Manager">Enter caravan Manager:</label>
+    <input type="text" id="Manager" placeholder="Manager" />
+    <br />
+    <label for="AccommodationCount">Enter caravan AccommodationCount:</label>
+    <input
+      type="number"
+      id="AccommodationCount"
+      placeholder="AccommodationCount"
+    />
+    <br />
+    <label for="AdditionalExtension">Enter AdditionalExtension:</label>
+    <input
+      type="number"
+      id="AdditionalExtension"
+      placeholder="AdditionalExtension"
+    />
+    <br />
+    <button id="create-button">Create</button>
+    <button id="done-button">Done</button>
+
+    <script>
+      // Event listener for the create button
+      document
+        .getElementById('create-button')
+        .addEventListener('click', async () => {
+          const CaravanID = document.getElementById('CaravanID').value;
+          const Name = document.getElementById('Name').value;
+          const Description = document.getElementById('Description').value;
+          const Type = document.getElementById('Type').value;
+          const Manager = document.getElementById('Manager').value;
+          const AccommodationCount =
+            document.getElementById('AccommodationCount').value;
+          const AdditionalExtension = document.getElementById(
+            'AdditionalExtension'
+          ).value;
+          const caravan = new Caravan(
+            CaravanID,
+            Name,
+            Description,
+            Type,
+            Manager,
+            AccommodationCount,
+            AdditionalExtension
+          );
+          const result = await createCaravans(caravan);
+          console.log(result);
+        });
+
+      // Event listener for the done button
+      document.getElementById('done-button').addEventListener('click', () => {
+        const CaravanID = document.getElementById('CaravanID').value;
+        const Name = document.getElementById('Name').value;
+        const Description = document.getElementById('Description').value;
+        const Type = document.getElementById('Type').value;
+        const Manager = document.getElementById('Manager').value;
+        const AccommodationCount =
+          document.getElementById('AccommodationCount').value;
+        const AdditionalExtension = document.getElementById(
+          'AdditionalExtension'
+        ).value;
+
+        alert(`You entered: ${CaravanID}`);
+        alert(`You entered: ${Name}`);
+        alert(`You entered: ${Description}`);
+        alert(`You entered: ${Type}`);
+        alert(`You entered: ${Manager}`);
+        alert(`You entered: ${AccommodationCount}`);
+        alert(`You entered: ${AdditionalExtension}`);
+      });
+
+      // Caravan class definition
+      class Caravan {
+        constructor(
+          CaravanID,
+          Name,
+          Description,
+          Type,
+          Manager,
+          AccommodationCount,
+          AdditionalExtension
+        ) {
+          this.CaravanID = CaravanID;
+          this.Name = Name;
+          this.Type = Type;
+          this.Description = Description;
+          this.Manager = Manager;
+          this.AccommodationCount = AccommodationCount;
+          this.AdditionalExtension = AdditionalExtension;
+        }
+      }
+
+      async function createCaravans(caravan) {
+        try {
+          const response = await fetch('/api/caravans', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(caravan),
+          });
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    </script>
+  </body>
+</html>
